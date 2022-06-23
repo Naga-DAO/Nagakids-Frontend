@@ -607,7 +607,7 @@ function App () {
       <section className='section'>
         <div className='section-inner'>
           <div className='inner-text'>
-            <h2>Naga KIDS NFT</h2>
+            <h2>NagaKids NFT</h2>
             <p>
               When Nagas step in to be part in daily life of humankind, the diffusion of human culture affects Nagas.
               The little Nagas wanted to understand better about humankind.
