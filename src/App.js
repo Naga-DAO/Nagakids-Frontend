@@ -33,6 +33,8 @@ export const StyledImg = styled.img``
 
 export const StyledLink = styled.a``
 
+const isOpen = false
+
 function App () {
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
@@ -347,9 +349,13 @@ function App () {
                   </StyledLink>
                 </div>
                 )
-              : (
-                <div>
-                  {
+              : !isOpen
+                ? (
+                  <div>Coming soon</div>
+                  )
+                : (
+                  <div>
+                    {
                     blockchain.account === '' || blockchain.smartContract === null
                       ? (
                         <div className='connect-div'>
@@ -460,8 +466,8 @@ function App () {
                           </>
                           )
                   }
-                </div>
-                )
+                  </div>
+                  )
           }
         </div>
 
