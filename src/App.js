@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import nagaImg01 from './styles/img/Naga_21-22.png'
 import pic1 from './styles/img/item1.png'
 import pic2 from './styles/img/Character-02.png'
-import pic3 from './styles/img/Character-05.png'
-import eggGif from './styles/naga-egg.gif'
+import pic3 from './styles/img/kid.png'
+import eggGif from './styles/naga2.gif'
 import nagaLogo from './styles/Draft_2-04.png'
 import facebookIcon from './styles/facebook-round-color.svg'
 import quixoticIcon from './styles/quixotic.svg'
@@ -480,17 +480,10 @@ function App () {
           <div className='inner-text'>
             <h2>What is Naga DAO?</h2>
             <p>
-              Naga DAO is an organization operating under the concept of
-              Decentralized Autonomous Organization (DAO) which is a group of
-              people working together using Blockchain technology as a tool.
-              Decentralized the power of the founder and spread it to other
-              members.{' '}
+              Naga DAO is an organization develop your skill in web 3.0
             </p>
-            <p>
-              It's like a club where people can work together from all over the
-              world without using trust but relying on verifiable transparency
-              on the Blockchain.
-            </p>
+            Web 3.0 is a new industry made from blockchain that solve a working problem to lead everyone to a new oppotunities.
+            <p />
           </div>
           <div
             className='inner-img'
@@ -515,15 +508,12 @@ function App () {
             <img src={pic1} alt='' />
           </div>
           <div className='inner-text alter'>
-            <h2>Naga DAO's Goal</h2>
+            <h2>Naga DAO's Vision</h2>
             <p>
-              Naga DAO was created to be a Thai NFT Incubator for all people.
+              Naga has a vision to drive everyone onto web3.0 working and be a space that
             </p>
             <p>
-              It is a group of people who believe in NFT technology and want to
-              deliver opportunity to everyone who wants to find an opportunity
-              to earn money with NFT and to cooperate in educating and help
-              anyone who wants to learn about NFT.
+              everyone can join to develop your working studying and learning to limit break and make a good working system.
             </p>
           </div>
         </div>
@@ -581,18 +571,16 @@ function App () {
       <section className='section'>
         <div className='section-inner'>
           <div className='inner-text'>
-            <h2>Naga DAO NFT</h2>
+            <h2>Naga KIDS NFT</h2>
             <p>
-              Naga DAO will have a total of 10K NFTs for members. Whitelists can
-              be requested by working within the group. March 2nd is the day
-              that whitelisters can mint through website for 0.03 ETH and March
-              3rd for Public Sale all NFT will be on Polygon Chain.
+              When Nagas step in to be part in daily life of humankind, the diffusion of human culture affects Nagas.
+              The little Nagas wanted to understand better about humankind.
+              The adorable illustrations were created and will make all of us endlessly fall in love with them.
             </p>
             <p>
-              Naga NFT holders will receive special privileges such as meeting
-              with the team to advise on the project. Access to exclusive
-              members-only events, access to team-based Research NFT projects,
-              and access to Naga's Metaverse will be built on the sandbox.
+              This project was created with the intention of everyone in Naga DAO aim to establish an encouraging working
+              atmosphere within DAO where we all work together to boost this project out into the eyes of everyone.
+              The artist of this collection is Nabtew, with a total of 1,111 supplies.
             </p>
           </div>
           <div
@@ -602,41 +590,12 @@ function App () {
             data-aos-once='true'
             data-aos-anchor-placement='top-center'
           >
-            <img src={pic3} alt='' className='img-resize-mobile' />
+            <img src={pic3} alt='' />
           </div>
         </div>
       </section>
 
-      <section className='section'>
-        <div className='section-inner'>
-          <div className='inner-text'>
-            <h2>Naga DAO NFT</h2>
-            <p>
-              Naga DAO will have a total of 10K NFTs for members. Whitelists can
-              be requested by working within the group. March 2nd is the day
-              that whitelisters can mint through website for 0.03 ETH and March
-              3rd for Public Sale all NFT will be on Polygon Chain.
-            </p>
-            <p>
-              Naga NFT holders will receive special privileges such as meeting
-              with the team to advise on the project. Access to exclusive
-              members-only events, access to team-based Research NFT projects,
-              and access to Naga's Metaverse will be built on the sandbox.
-            </p>
-          </div>
-          <div
-            className='inner-img'
-            data-aos='fade-down-left'
-            data-aos-duration='1000'
-            data-aos-once='true'
-            data-aos-anchor-placement='top-center'
-          >
-            <img src={pic3} alt='' className='img-resize-mobile' />
-          </div>
-        </div>
-      </section>
-
-      <section className='section'>
+      <section className='section' style={{ backgroundColor: '#c4dbcc' }}>
         <div className='section-inner'>
           <div className='contribute'>
             <div className='title'>
