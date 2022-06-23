@@ -153,7 +153,7 @@ function App () {
       .then((receipt) => {
         console.log(receipt)
         setFeedback(
-          `the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+          `the ${CONFIG.NFT_NAME} is yours! go visit Quixotic.io to view it.`
         )
         setClaimingNft(false)
         dispatch(fetchData(blockchain.account))

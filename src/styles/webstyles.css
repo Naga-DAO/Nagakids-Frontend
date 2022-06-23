@@ -194,8 +194,8 @@ h2 {
   /* width: 100%; */
   /* height: 100vh; */
   overflow: hidden;
-  /* background-image: url("NFTwall-01.png"); */
-  background-color: #00100f;
+  background-image: url("NFTwall-01.png");
+  /* background-color: #00100f; */
   background-size: cover;
   background-position: 50% 50%;
   width: 100%;
