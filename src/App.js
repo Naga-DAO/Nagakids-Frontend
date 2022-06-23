@@ -73,8 +73,8 @@ function App () {
     // ],
     Founder: [
       {
-        imgMain: '/images/nuttakit-kundum-profile.jpeg',
-        imgHover: '/images/nuttakit-kundum-naga.png',
+        imgMain: '/images/nuttakit-kundum-naga.png',
+        imgHover: '/images/nuttakit-kundum-profile.jpeg',
         link: 'https://twitter.com/NuttakitNFT'
       }
     ],

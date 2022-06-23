@@ -1,7 +1,7 @@
 // log
-import Web3 from 'web3'
+// import Web3 from 'web3'
 import store from '../store'
-import { merkleTree, whitelistRoundAddresses } from '../../helpers'
+// import { merkleTree, whitelistRoundAddresses } from '../../helpers'
 
 const fetchDataRequest = () => {
   return {
@@ -13,7 +13,7 @@ const fetchDataSuccess = (payload) => {
   return {
     type: 'CHECK_DATA_SUCCESS',
     payload: payload
-  }
+  }``
 }
 
 // const fetchDataFailed = (payload) => {
@@ -46,17 +46,17 @@ export const fetchData = () => {
       //   .blockchain.tokenContract.methods.allowance(store.getState().blockchain.account, '0xb71751FB0C6551324f2F96040D8c54e9560dBa82')
       //   .call()
 
-      approved = parseFloat(Web3.utils.fromWei(approved)) >= 0.03
+      // approved = parseFloat(Web3.utils.fromWei(approved)) >= 0.03
 
-      console.log('WHITELIST', whitelist, store.getState().blockchain.account)
+      // console.log('WHITELIST', whitelist, store.getState().blockchain.account)
 
-      console.log(approved)
+      // console.log(approved)
 
       dispatch(
         fetchDataSuccess({
-          totalSupply,
-          whitelist,
-          approved
+          totalSupply
+          // whitelist,
+          // approved
           // cost,
         })
       )
