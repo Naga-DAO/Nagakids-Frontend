@@ -39,7 +39,7 @@ function App () {
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
   const data = useSelector((state) => state.data)
-  const [approved, setApproved] = useState(data.approved)
+  // const [approved, setApproved] = useState(data.approved)
   const [preSaleNum, setPreSaleNum] = useState(0)
   const [claimingNft, setClaimingNft] = useState(false)
   const [feedback, setFeedback] = useState('Click buy to mint your NFT.')
@@ -125,9 +125,9 @@ function App () {
     ]
   }
 
-  useEffect(() => {
-    setApproved(data.approved)
-  }, [data.approved])
+  // useEffect(() => {
+  //   setApproved(data.approved)
+  // }, [data.approved])
 
   const claimNFTs = () => {
     const cost = CONFIG.WEI_COST
@@ -160,37 +160,37 @@ function App () {
       })
   }
 
-  const approve = () => {
-    const cost = CONFIG.WEI_COST
-    const gasLimit = CONFIG.GAS_LIMIT
-    const totalCostWei = String(cost * mintAmount)
-    const totalGasLimit = String(gasLimit * mintAmount)
-    console.log('Cost: ', totalCostWei)
-    console.log('Gas limit: ', totalGasLimit)
-    setFeedback(`Approving WETH for ${CONFIG.NFT_NAME}...`)
-    setClaimingNft(true)
-    console.log(blockchain)
-    console.log('CONTRACT ADDRESS', CONFIG.CONTRACT_ADDRESS)
-    blockchain.tokenContract.methods
-      .approve(CONFIG.CONTRACT_ADDRESS, '1000000000000000000000000000000')
-      .send({
-        gasLimit: String(totalGasLimit),
-        to: CONFIG.CONTRACT_ADDRESS,
-        from: blockchain.account
-      })
-      .once('error', (err) => {
-        console.log(err)
-        setFeedback('Please refresh this page when the approval is confirmed')
-        setClaimingNft(false)
-      })
-      .then((receipt) => {
-        console.log(receipt)
-        setFeedback(`WETH approved, let mint ${CONFIG.NFT_NAME}.`)
-        setClaimingNft(false)
-        dispatch(fetchData(blockchain.account))
-        setApproved(true)
-      })
-  }
+  // const approve = () => {
+  //   const cost = CONFIG.WEI_COST
+  //   const gasLimit = CONFIG.GAS_LIMIT
+  //   const totalCostWei = String(cost * mintAmount)
+  //   const totalGasLimit = String(gasLimit * mintAmount)
+  //   console.log('Cost: ', totalCostWei)
+  //   console.log('Gas limit: ', totalGasLimit)
+  //   setFeedback(`Approving WETH for ${CONFIG.NFT_NAME}...`)
+  //   setClaimingNft(true)
+  //   console.log(blockchain)
+  //   console.log('CONTRACT ADDRESS', CONFIG.CONTRACT_ADDRESS)
+  //   blockchain.tokenContract.methods
+  //     .approve(CONFIG.CONTRACT_ADDRESS, '1000000000000000000000000000000')
+  //     .send({
+  //       gasLimit: String(totalGasLimit),
+  //       to: CONFIG.CONTRACT_ADDRESS,
+  //       from: blockchain.account
+  //     })
+  //     .once('error', (err) => {
+  //       console.log(err)
+  //       setFeedback('Please refresh this page when the approval is confirmed')
+  //       setClaimingNft(false)
+  //     })
+  //     .then((receipt) => {
+  //       console.log(receipt)
+  //       setFeedback(`WETH approved, let mint ${CONFIG.NFT_NAME}.`)
+  //       setClaimingNft(false)
+  //       dispatch(fetchData(blockchain.account))
+  //       setApproved(true)
+  //     })
+  // }
 
   const decrementMintAmount = () => {
     let newMintAmount = mintAmount - 1
@@ -333,7 +333,7 @@ function App () {
                           </button>
 
                           <div className='connect-div-p'>
-                            Connect to the Polygon Network
+                            Connect to the Optimism Network
                           </div>
 
                           {blockchain.errorMsg !== ''
@@ -375,13 +375,13 @@ function App () {
                               </div>
 
                               <div className='mint-btn'>
-                                {!approved && (
+                                {/* {!approved && (
                                   <button
                                     className='buy-btn glow-on-hover'
                                     disabled={claimingNft ? 1 : 0}
                                     onClick={(e) => {
                                       e.preventDefault()
-                                      approve()
+                                      // approve()
                                       getData()
                                     }}
                                   >
@@ -391,21 +391,20 @@ function App () {
                                         ? 'Loading...'
                                         : 'APPROVE WETH'}
                                   </button>
-                                )}
+                                )} */}
 
-                                {approved && (
-                                  <button
-                                    className='buy-btn glow-on-hover'
-                                    disabled={claimingNft ? 1 : 0}
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      claimNFTs()
-                                      getData()
-                                    }}
-                                  >
-                                    {claimingNft ? 'BUYING...' : 'BUY'}
-                                  </button>
-                                )}
+                                <button
+                                  className='buy-btn glow-on-hover'
+                                  disabled={claimingNft ? 1 : 0}
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    claimNFTs()
+                                    getData()
+                                  }}
+                                >
+                                  {claimingNft ? 'BUYING...' : 'BUY'}
+                                </button>
+
                               </div>
 
                               {feedback}
@@ -433,7 +432,7 @@ function App () {
                   }
                 </div>
                 )
-            }
+          }
         </div>
 
         <a
@@ -639,7 +638,7 @@ function App () {
 
       <section className='section'>
         <div className='section-inner'>
-          <dev className='contribute'>
+          <div className='contribute'>
             <div className='title'>
               <h2>Contributor</h2>
             </div>
@@ -661,7 +660,7 @@ function App () {
                 </div>
               ))
             }
-          </dev>
+          </div>
         </div>
       </section>
 

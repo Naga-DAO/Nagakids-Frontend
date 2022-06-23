@@ -41,20 +41,15 @@ export const connect = () => {
         Accept: 'application/json'
       }
     })
-    const tokenAbiResponse = await fetch('/config/tokenAbi.json', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
     const abi = await abiResponse.json()
-    const tokenAbi = await tokenAbiResponse.json()
+
     const configResponse = await fetch('/config/config.json', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       }
     })
+
     const CONFIG = await configResponse.json()
     const { ethereum } = window
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask
@@ -74,16 +69,10 @@ export const connect = () => {
             CONFIG.CONTRACT_ADDRESS
           )
 
-          const TokenContract = new Web3EthContract(
-            tokenAbi,
-            CONFIG.WETH_CONTRACT_ADDRESS
-          )
-
           dispatch(
             connectSuccess({
               account: accounts[0],
               smartContract: NagaSale,
-              tokenContract: TokenContract,
               web3: web3
             })
           )
