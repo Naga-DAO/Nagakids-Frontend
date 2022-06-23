@@ -1,11 +1,10 @@
 {
-  "CONTRACT_ADDRESS": "0xb71751FB0C6551324f2F96040D8c54e9560dBa82",
-  "WETH_CONTRACT_ADDRESS": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+  "CONTRACT_ADDRESS": "0xEb1387AE29a2126158b43a0536827bfB607DF82b",
   "SCAN_LINK": "https://polygonscan.com/address/0x046976f19a14ee7d06cb9e983c8142fb2aac0e5e",
   "NETWORK": {
     "NAME": "Optimism",
-    "SYMBOL": "ETH",
-    "ID": 10
+    "SYMBOL": "OETH",
+    "ID": 4
   },
   "NFT_NAME": "NagaDAO",
   "SYMBOL": "NAGK",

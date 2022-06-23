@@ -1,16 +1,16 @@
 import Web3 from 'web3'
-import keccak256 from 'keccak256'
+import { ethers } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 
 const blockchainNetworkConfig = {
-  chainId: Web3.utils.toHex(10),
+  chainId: Web3.utils.toHex(4),
   chainName: 'Optimism',
   nativeCurrency: {
     name: 'Ethereum',
     decimals: 18,
     symbol: 'ETH'
   },
-  rpcUrls: ['https://mainnet.optimism.io'],
+  rpcUrls: ['https://rinkeby.infura.io/v3/'],
   blockExplorerUrls: ['https://optimistic.etherscan.io']
 }
 
@@ -27,25 +27,34 @@ async function addBlockchainNetwork () {
   }
 }
 
-const WL_ROUND = '68e7d51fdb912cb107dda2e59b053d87fcca666dd0ef5339cd3474ccb5276bba'
-const NG_ROUND = 'b3c595e55271590809f54e2f4fc3a582754f45b104dd3c41666e2ad310493db3'
+const WL_ROUND = '0x68e7d51fdb912cb107dda2e59b053d87fcca666dd0ef5339cd3474ccb5276bba'
+const NG_ROUND = '0xb3c595e55271590809f54e2f4fc3a582754f45b104dd3c41666e2ad310493db3'
 
 const whitelistRoundAddresses = [
   ['0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2', 2, WL_ROUND],
-  ['0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2', 3, NG_ROUND]
+  ['0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2', 3, NG_ROUND],
+  ['0x5150CfFff28a33E1d1F3211B4D2799a1DB3F82e8', 3, NG_ROUND]
 ]
 
 const hashKeccak256 = (data) => {
-  const [address, amount, round] = data
-  // address = ethers.utils.getAddress(address)
-  return keccak256(['address', 'uint256', 'bytes32'], [address, amount, round])
+  let [address, amount, round] = data
+  address = ethers.utils.getAddress(address)
+
+  return ethers.utils.solidityKeccak256(['address', 'uint256', 'bytes32'], [address, amount, round])
 }
 
 const leafNodes = whitelistRoundAddresses.map(hashKeccak256)
-const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true })
+const merkleTree = new MerkleTree(leafNodes, ethers.utils.keccak256, { sortPairs: true })
+
+// console.log('leaft1', merkleTree.getHexProof(hashKeccak256(whitelistRoundAddresses[2])))
+console.log('leaf', leafNodes[2].toString('hex'))
+// console.log('leaf', merkleTree.getHexProof(leafNodes[2]))
+console.log('ROOT', merkleTree.getHexRoot())
+// console.log(merkleTree.verify(merkleTree.getHexProof(leafNodes[2]), leafNodes[2], merkleTree.getRoot()))
 
 export {
   addBlockchainNetwork,
   whitelistRoundAddresses,
-  merkleTree
+  merkleTree,
+  hashKeccak256
 }

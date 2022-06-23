@@ -1,9 +1,7 @@
-// constants
 import Web3EthContract from 'web3-eth-contract'
 import Web3 from 'web3'
-// log
 import { fetchData } from '../data/dataActions'
-import { addBlockchainNetwork } from '../../helpers'
+import { addBlockchainNetwork, whitelistRoundAddresses, hashKeccak256, merkleTree } from '../../helpers'
 
 const connectRequest = () => {
   return {
@@ -41,8 +39,8 @@ export const connect = () => {
         Accept: 'application/json'
       }
     })
-    const abi = await abiResponse.json()
 
+    const abi = await abiResponse.json()
     const configResponse = await fetch('/config/config.json', {
       headers: {
         'Content-Type': 'application/json',
@@ -53,6 +51,7 @@ export const connect = () => {
     const CONFIG = await configResponse.json()
     const { ethereum } = window
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask
+
     if (metamaskIsInstalled) {
       Web3EthContract.setProvider(ethereum)
       const web3 = new Web3(ethereum)
@@ -60,25 +59,51 @@ export const connect = () => {
         const accounts = await ethereum.request({
           method: 'eth_requestAccounts'
         })
+
         const networkId = await ethereum.request({
           method: 'net_version'
         })
+
         if (networkId === `${CONFIG.NETWORK.ID}`) {
-          const NagaSale = new Web3EthContract(
+          const nanaMintContract = new Web3EthContract(
             abi,
             CONFIG.CONTRACT_ADDRESS
           )
 
+          const round = await nanaMintContract.methods.currentMintRound().call()
+
+          const proofs = whitelistRoundAddresses.filter((w) => {
+            return w[0].toLowerCase() === accounts[0].toLowerCase() && w[2].toLowerCase() === round.toLowerCase()
+          })
+
+          let maxMintAmount = 0
+          if (proofs.length === 1) {
+            maxMintAmount = proofs[0][1]
+          }
+
+          const hash = hashKeccak256(proofs[0])
+          const mkp = merkleTree.getHexProof(hash)
+          console.log('mkp', mkp)
+
+          proofs[0].push(mkp)
+
           dispatch(
             connectSuccess({
               account: accounts[0],
-              smartContract: NagaSale,
-              web3: web3
+              smartContract: nanaMintContract,
+              web3,
+              round,
+              proofs,
+              maxMintAmount
             })
           )
+
+          console.log('dispatched')
+
           // Add listeners start
           ethereum.on('accountsChanged', (accounts) => {
-            dispatch(updateAccount(accounts[0]))
+            // dispatch(updateAccount(accounts[0]))
+            window.location.reload()
           })
           ethereum.on('chainChanged', () => {
             window.location.reload()
@@ -92,6 +117,7 @@ export const connect = () => {
           }
         }
       } catch (err) {
+        console.log(err)
         dispatch(connectFailed('Something went wrong.'))
       }
     } else {

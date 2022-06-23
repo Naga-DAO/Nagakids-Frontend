@@ -33,17 +33,17 @@ export const StyledImg = styled.img``
 
 export const StyledLink = styled.a``
 
-const PUBLIC_SALE = true
-
 function App () {
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
   const data = useSelector((state) => state.data)
+
   // const [approved, setApproved] = useState(data.approved)
   const [preSaleNum, setPreSaleNum] = useState(0)
   const [claimingNft, setClaimingNft] = useState(false)
   const [feedback, setFeedback] = useState('Click buy to mint your NFT.')
-  const [mintAmount, setMintAmount] = useState(1)
+  // const [mintAmount, setMintAmount] = useState(1)
+
   const [CONFIG, SET_CONFIG] = useState({
     CONTRACT_ADDRESS: '',
     SCAN_LINK: '',
@@ -129,17 +129,54 @@ function App () {
   //   setApproved(data.approved)
   // }, [data.approved])
 
-  const claimNFTs = () => {
+  // const claimNFTs = () => {
+  //   const cost = CONFIG.WEI_COST
+  //   const gasLimit = CONFIG.GAS_LIMIT
+  //   const totalCostWei = String(cost * mintAmount)
+  //   const totalGasLimit = String(gasLimit * mintAmount)
+  //   console.log('Cost: ', totalCostWei)
+  //   console.log('Gas limit: ', totalGasLimit)
+  //   setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
+  //   setClaimingNft(true)
+  //   blockchain.smartContract.methods
+  //     .mint(mintAmount)
+  //     .send({
+  //       gasLimit: String(totalGasLimit),
+  //       to: CONFIG.CONTRACT_ADDRESS,
+  //       from: blockchain.account
+  //     })
+  //     .once('error', (err) => {
+  //       console.log(err)
+  //       setFeedback('Sorry, something went wrong please try again later.')
+  //       setClaimingNft(false)
+  //     })
+  //     .then((receipt) => {
+  //       console.log(receipt)
+  //       setFeedback(
+  //         `the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+  //       )
+  //       setClaimingNft(false)
+  //       dispatch(fetchData(blockchain.account))
+  //     })
+  // }
+
+  const mintNFTs = () => {
     const cost = CONFIG.WEI_COST
     const gasLimit = CONFIG.GAS_LIMIT
-    const totalCostWei = String(cost * mintAmount)
-    const totalGasLimit = String(gasLimit * mintAmount)
+
+    const totalCostWei = String(cost * blockchain.maxMintAmount)
+    const totalGasLimit = String(gasLimit * blockchain.maxMintAmount)
+
     console.log('Cost: ', totalCostWei)
     console.log('Gas limit: ', totalGasLimit)
+
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
+
+    console.log(blockchain.proofs[0][3])
+
     blockchain.smartContract.methods
-      .mint(mintAmount)
+      .mint(blockchain.proofs[0][3], blockchain.proofs[0][1], blockchain.proofs[0][2])
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -191,24 +228,20 @@ function App () {
   //       setApproved(true)
   //     })
   // }
-
-  const decrementMintAmount = () => {
-    let newMintAmount = mintAmount - 1
-    if (newMintAmount < 1) {
-      newMintAmount = 1
-    }
-    setMintAmount(newMintAmount)
-  }
-
-  const maxMint = PUBLIC_SALE ? 10 : data.whitelist ?? 0
-
-  const incrementMintAmount = () => {
-    let newMintAmount = mintAmount + 1
-    if (newMintAmount > maxMint) {
-      newMintAmount = maxMint
-    }
-    setMintAmount(newMintAmount)
-  }
+  // const decrementMintAmount = () => {
+  //   let newMintAmount = mintAmount - 1
+  //   if (newMintAmount < 1) {
+  //     newMintAmount = 1
+  //   }
+  //   setMintAmount(newMintAmount)
+  // }
+  // const incrementMintAmount = () => {
+  //   let newMintAmount = mintAmount + 1
+  //   if (newMintAmount > blockchain.maxMintAmount) {
+  //     newMintAmount = blockchain.maxMintAmount
+  //   }
+  //   setMintAmount(newMintAmount)
+  // }
 
   const initPreSaleNum = () => {
     setPreSaleNum(39)
@@ -343,14 +376,12 @@ function App () {
                             : null}
                         </div>
                         )
-                      : PUBLIC_SALE || data.whitelist > 0
+                      : blockchain.proofs.length > 0
                         ? (
                           <>
                             <div className='after-connected'>
-                              {/* {feedback} */}
-
                               <div className='mint-amount'>
-                                <button
+                                {/* <button
                                   style={{ lineHeight: 0.4 }}
                                   disabled={claimingNft ? 1 : 0}
                                   onClick={(e) => {
@@ -359,10 +390,9 @@ function App () {
                                   }}
                                 >
                                   −
-                                </button>
-
-                                {mintAmount}
-
+                                </button> */}
+                                {blockchain.maxMintAmount}
+                                {/*
                                 <button
                                   disabled={claimingNft ? 1 : 0}
                                   onClick={(e) => {
@@ -371,7 +401,7 @@ function App () {
                                   }}
                                 >
                                   +
-                                </button>
+                                </button> */}
                               </div>
 
                               <div className='mint-btn'>
@@ -398,7 +428,7 @@ function App () {
                                   disabled={claimingNft ? 1 : 0}
                                   onClick={(e) => {
                                     e.preventDefault()
-                                    claimNFTs()
+                                    mintNFTs() // Important
                                     getData()
                                   }}
                                 >
@@ -419,8 +449,8 @@ function App () {
                           <>
                             <div className='after-connected'>
                               <div className='mint-amount'>
-                                {data.whitelist === -1
-                                  ? 'Loading...'
+                                {blockchain.proofs.length <= 0
+                                  ? 'You are not in whitelist'
                                   : 'Your mint quota has exceeded'}
                               </div>
                               <div className='connected-to'>
