@@ -11,7 +11,7 @@ import pic3 from './styles/img/Character-05.png'
 import eggGif from './styles/naga-egg.gif'
 import nagaLogo from './styles/Draft_2-04.png'
 import facebookIcon from './styles/facebook-round-color.svg'
-import openseaIcon from './styles/opensea.svg'
+import quixoticIcon from './styles/quixotic.svg'
 import discordIcon from './styles/discord.svg'
 import twitterIcon from './styles/twitter-round-color.svg'
 import useInterval from 'use-interval'
@@ -264,12 +264,12 @@ function App () {
       <div className='nagaLinks'>
         <div className='icon'>
           <a
-            href='https://opensea.io/collection/naga-dao'
+            href='https://quixotic.io/collection/0x9bF1FB77441df41aaA9a5a425d4E3a3527eeB4ec'
             target='_blank'
-            className='a-link opensea'
+            className='a-link quixotic'
             rel='noreferrer'
           >
-            <img src={openseaIcon} alt='' />
+            <img src={quixoticIcon} alt='' />
           </a>
           <a
             href='https://discord.gg/DF7krb8uNq'
@@ -608,7 +608,36 @@ function App () {
         </div>
       </section>
 
-      <section className='section' style={{ backgroundColor: '#c4dbcc' }}>
+      <section className='section'>
+        <div className='section-inner'>
+          <div className='inner-text'>
+            <h2>Naga DAO NFT</h2>
+            <p>
+              Naga DAO will have a total of 10K NFTs for members. Whitelists can
+              be requested by working within the group. March 2nd is the day
+              that whitelisters can mint through website for 0.03 ETH and March
+              3rd for Public Sale all NFT will be on Polygon Chain.
+            </p>
+            <p>
+              Naga NFT holders will receive special privileges such as meeting
+              with the team to advise on the project. Access to exclusive
+              members-only events, access to team-based Research NFT projects,
+              and access to Naga's Metaverse will be built on the sandbox.
+            </p>
+          </div>
+          <div
+            className='inner-img'
+            data-aos='fade-down-left'
+            data-aos-duration='1000'
+            data-aos-once='true'
+            data-aos-anchor-placement='top-center'
+          >
+            <img src={pic3} alt='' className='img-resize-mobile' />
+          </div>
+        </div>
+      </section>
+
+      <section className='section'>
         <div className='section-inner'>
           <dev className='contribute'>
             <div className='title'>
@@ -643,8 +672,8 @@ function App () {
           </div>
 
           <div className='icon'>
-            <a href='https://opensea.io/collection/naga-dao' className='a-link opensea'>
-              <img src={openseaIcon} alt='' />
+            <a href='https://quixotic.io/collection/0x9bF1FB77441df41aaA9a5a425d4E3a3527eeB4ec' className='a-link quixotic'>
+              <img src={quixoticIcon} alt='' />
             </a>
             <a href='https://discord.gg/DF7krb8uNq' className='a-link discord'>
               <img src={discordIcon} alt='' />
