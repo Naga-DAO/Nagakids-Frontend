@@ -4,16 +4,16 @@
   "SCAN_LINK": "https://polygonscan.com/address/0x046976f19a14ee7d06cb9e983c8142fb2aac0e5e",
   "NETWORK": {
     "NAME": "Optimism",
-    "SYMBOL": "OETH",
+    "SYMBOL": "ETH",
     "ID": 10
   },
   "NFT_NAME": "NagaDAO",
-  "SYMBOL": "NG",
-  "MAX_SUPPLY": 1000,
-  "WEI_COST": 30000000000000000,
-  "DISPLAY_COST": 0.03,
+  "SYMBOL": "NAGC",
+  "MAX_SUPPLY": 1111,
+  "WEI_COST": 0,
+  "DISPLAY_COST": 0,
   "GAS_LIMIT": 285000,
-  "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://opensea.io/collection/naga-dao",
+  "MARKETPLACE": "Quixotic",
+  "MARKETPLACE_LINK": "https://quixotic.io/collection/0x9bF1FB77441df41aaA9a5a425d4E3a3527eeB4ec",
   "SHOW_BACKGROUND": false
 }
