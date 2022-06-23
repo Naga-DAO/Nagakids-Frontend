@@ -350,12 +350,12 @@ function App () {
                 </div>
                 )
               : !isOpen
-                ? (
-                  <div>Coming soon</div>
-                  )
-                : (
-                  <div>
-                    {
+                  ? (
+                    <div>Coming soon</div>
+                    )
+                  : (
+                    <div>
+                      {
                     blockchain.account === '' || blockchain.smartContract === null
                       ? (
                         <div className='connect-div'>
@@ -466,8 +466,8 @@ function App () {
                           </>
                           )
                   }
-                  </div>
-                  )
+                    </div>
+                    )
           }
         </div>
 
