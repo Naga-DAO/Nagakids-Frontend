@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { connect } from './redux/blockchain/blockchainActions'
-import { fetchData } from './redux/data/dataActions'
+import { connect, prepareData } from './redux/blockchain/blockchainActions'
 import styled from 'styled-components'
 
 import nagaImg01 from './styles/img/Naga_21-22.png'
@@ -14,12 +13,11 @@ import facebookIcon from './styles/facebook-round-color.svg'
 import quixoticIcon from './styles/quixotic.svg'
 import discordIcon from './styles/discord.jpeg'
 import twitterIcon from './styles/twitter.png'
-import useInterval from 'use-interval'
 import WalletAddress from './components/WalletAddress'
 import Avatar from './components/Avatar'
-// import { PresentToAll } from '@mui/icons-material';
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import useInterval from 'use-interval'
 
 export const StyledButton = styled.button``
 
@@ -33,18 +31,13 @@ export const StyledImg = styled.img``
 
 export const StyledLink = styled.a``
 
-const isOpen = false
+const isOpen = true
 
 function App () {
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
-  const data = useSelector((state) => state.data)
-
-  // const [approved, setApproved] = useState(data.approved)
-  const [preSaleNum, setPreSaleNum] = useState(0)
   const [claimingNft, setClaimingNft] = useState(false)
   const [feedback, setFeedback] = useState('Click buy to mint your NFT.')
-  // const [mintAmount, setMintAmount] = useState(1)
 
   const [CONFIG, SET_CONFIG] = useState({
     CONTRACT_ADDRESS: '',
@@ -173,41 +166,6 @@ function App () {
     ]
   }
 
-  // useEffect(() => {
-  //   setApproved(data.approved)
-  // }, [data.approved])
-
-  // const claimNFTs = () => {
-  //   const cost = CONFIG.WEI_COST
-  //   const gasLimit = CONFIG.GAS_LIMIT
-  //   const totalCostWei = String(cost * mintAmount)
-  //   const totalGasLimit = String(gasLimit * mintAmount)
-  //   console.log('Cost: ', totalCostWei)
-  //   console.log('Gas limit: ', totalGasLimit)
-  //   setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
-  //   setClaimingNft(true)
-  //   blockchain.smartContract.methods
-  //     .mint(mintAmount)
-  //     .send({
-  //       gasLimit: String(totalGasLimit),
-  //       to: CONFIG.CONTRACT_ADDRESS,
-  //       from: blockchain.account
-  //     })
-  //     .once('error', (err) => {
-  //       console.log(err)
-  //       setFeedback('Sorry, something went wrong please try again later.')
-  //       setClaimingNft(false)
-  //     })
-  //     .then((receipt) => {
-  //       console.log(receipt)
-  //       setFeedback(
-  //         `the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-  //       )
-  //       setClaimingNft(false)
-  //       dispatch(fetchData(blockchain.account))
-  //     })
-  // }
-
   const mintNFTs = () => {
     const cost = CONFIG.WEI_COST
     const gasLimit = CONFIG.GAS_LIMIT
@@ -241,64 +199,7 @@ function App () {
           `the ${CONFIG.NFT_NAME} is yours! go visit Quixotic.io to view it.`
         )
         setClaimingNft(false)
-        dispatch(fetchData(blockchain.account))
       })
-  }
-
-  // const approve = () => {
-  //   const cost = CONFIG.WEI_COST
-  //   const gasLimit = CONFIG.GAS_LIMIT
-  //   const totalCostWei = String(cost * mintAmount)
-  //   const totalGasLimit = String(gasLimit * mintAmount)
-  //   console.log('Cost: ', totalCostWei)
-  //   console.log('Gas limit: ', totalGasLimit)
-  //   setFeedback(`Approving WETH for ${CONFIG.NFT_NAME}...`)
-  //   setClaimingNft(true)
-  //   console.log(blockchain)
-  //   console.log('CONTRACT ADDRESS', CONFIG.CONTRACT_ADDRESS)
-  //   blockchain.tokenContract.methods
-  //     .approve(CONFIG.CONTRACT_ADDRESS, '1000000000000000000000000000000')
-  //     .send({
-  //       gasLimit: String(totalGasLimit),
-  //       to: CONFIG.CONTRACT_ADDRESS,
-  //       from: blockchain.account
-  //     })
-  //     .once('error', (err) => {
-  //       console.log(err)
-  //       setFeedback('Please refresh this page when the approval is confirmed')
-  //       setClaimingNft(false)
-  //     })
-  //     .then((receipt) => {
-  //       console.log(receipt)
-  //       setFeedback(`WETH approved, let mint ${CONFIG.NFT_NAME}.`)
-  //       setClaimingNft(false)
-  //       dispatch(fetchData(blockchain.account))
-  //       setApproved(true)
-  //     })
-  // }
-  // const decrementMintAmount = () => {
-  //   let newMintAmount = mintAmount - 1
-  //   if (newMintAmount < 1) {
-  //     newMintAmount = 1
-  //   }
-  //   setMintAmount(newMintAmount)
-  // }
-  // const incrementMintAmount = () => {
-  //   let newMintAmount = mintAmount + 1
-  //   if (newMintAmount > blockchain.maxMintAmount) {
-  //     newMintAmount = blockchain.maxMintAmount
-  //   }
-  //   setMintAmount(newMintAmount)
-  // }
-
-  const initPreSaleNum = () => {
-    setPreSaleNum(39)
-  }
-
-  const getData = () => {
-    if (blockchain.account !== '' && blockchain.smartContract !== null) {
-      dispatch(fetchData(blockchain.account))
-    }
   }
 
   const getConfig = async () => {
@@ -322,8 +223,6 @@ function App () {
       if (accounts.length === 0) return
 
       dispatch(connect())
-      getData()
-      initPreSaleNum()
     } catch (err) { }
   }
 
@@ -334,8 +233,8 @@ function App () {
   }, [])
 
   useInterval(() => {
-    getData()
-  }, 3000)
+    dispatch(prepareData())
+  }, 1000)
 
   return (
     <div className='all-wrapper'>
@@ -385,7 +284,7 @@ function App () {
 
         <div className='mint-interface'>
           {
-            Number(data.totalSupply) >= CONFIG.MAX_SUPPLY
+            Number(blockchain.totalSupply) >= CONFIG.MAX_SUPPLY
               ? (
                 <div>
                   <div>The sale has ended.</div>
@@ -410,8 +309,6 @@ function App () {
                             onClick={(e) => {
                               e.preventDefault()
                               dispatch(connect())
-                              getData()
-                              initPreSaleNum()
                             }}
                           >
                             CONNECT
@@ -433,55 +330,17 @@ function App () {
                           <>
                             <div className='after-connected'>
                               <div className='mint-amount'>
-                                {/* <button
-                                  style={{ lineHeight: 0.4 }}
-                                  disabled={claimingNft ? 1 : 0}
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    decrementMintAmount()
-                                  }}
-                                >
-                                  −
-                                </button> */}
                                 {blockchain.maxMintAmount}
-                                {/*
-                                <button
-                                  disabled={claimingNft ? 1 : 0}
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    incrementMintAmount()
-                                  }}
-                                >
-                                  +
-                                </button> */}
                               </div>
 
                               <div className='mint-btn'>
-                                {/* {!approved && (
-                                  <button
-                                    className='buy-btn glow-on-hover'
-                                    disabled={claimingNft ? 1 : 0}
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      // approve()
-                                      getData()
-                                    }}
-                                  >
-                                    {claimingNft
-                                      ? 'APPROVING...'
-                                      : data.whitelist === -1
-                                        ? 'Loading...'
-                                        : 'APPROVE WETH'}
-                                  </button>
-                                )} */}
-
                                 <button
                                   className='buy-btn glow-on-hover'
                                   disabled={claimingNft ? 1 : 0}
                                   onClick={(e) => {
                                     e.preventDefault()
-                                    mintNFTs() // Important
-                                    getData()
+                                    mintNFTs()
+                                    // getData()
                                   }}
                                 >
                                   {claimingNft ? 'BUYING...' : 'BUY'}
@@ -540,13 +399,13 @@ function App () {
                 </StyledLink>
             </div> */}
           <div className='bot-nav-minted'>
-            {data.whitelist === -1
+            {(blockchain.isPrivate === false && blockchain.isPublic === false)
               ? (
                 <>... / {CONFIG.MAX_SUPPLY}</>
                 )
               : (
                 <>
-                  {Number(data.totalSupply) + preSaleNum} / {CONFIG.MAX_SUPPLY}
+                  {Number(blockchain.totalSupply)} / {CONFIG.MAX_SUPPLY}
                 </>
                 )}
           </div>

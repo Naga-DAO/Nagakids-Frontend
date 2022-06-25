@@ -1,16 +1,17 @@
 import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
+import contractInterface from './abi.json'
 
 const blockchainNetworkConfig = {
-  chainId: Web3.utils.toHex(4),
+  chainId: Web3.utils.toHex(10),
   chainName: 'Optimism',
   nativeCurrency: {
     name: 'Ethereum',
     decimals: 18,
     symbol: 'ETH'
   },
-  rpcUrls: ['https://rinkeby.infura.io/v3/'],
+  rpcUrls: ['https://rpc.ankr.com/optimism'],
   blockExplorerUrls: ['https://optimistic.etherscan.io']
 }
 
@@ -22,7 +23,8 @@ async function addBlockchainNetwork () {
     })
 
     return true
-  } catch (error) {
+  } catch (err) {
+    console.log(err)
     return false
   }
 }
@@ -33,7 +35,8 @@ const NG_ROUND = '0xb3c595e55271590809f54e2f4fc3a582754f45b104dd3c41666e2ad31049
 const whitelistRoundAddresses = [
   ['0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2', 2, WL_ROUND],
   ['0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2', 3, NG_ROUND],
-  ['0x5150CfFff28a33E1d1F3211B4D2799a1DB3F82e8', 3, NG_ROUND]
+  ['0x5150CfFff28a33E1d1F3211B4D2799a1DB3F82e8', 3, NG_ROUND],
+  ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', 3, NG_ROUND]
 ]
 
 const hashKeccak256 = (data) => {
@@ -56,5 +59,6 @@ export {
   addBlockchainNetwork,
   whitelistRoundAddresses,
   merkleTree,
-  hashKeccak256
+  hashKeccak256,
+  contractInterface
 }

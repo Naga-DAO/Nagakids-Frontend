@@ -1,7 +1,13 @@
 import Web3EthContract from 'web3-eth-contract'
 import Web3 from 'web3'
-import { fetchData } from '../data/dataActions'
-import { addBlockchainNetwork, whitelistRoundAddresses, hashKeccak256, merkleTree } from '../../helpers'
+import {
+  addBlockchainNetwork,
+  whitelistRoundAddresses,
+  hashKeccak256,
+  merkleTree,
+  contractInterface
+} from '../../helpers'
+import store from '../store'
 
 const connectRequest = () => {
   return {
@@ -23,24 +29,87 @@ const connectFailed = (payload) => {
   }
 }
 
-const updateAccountRequest = (payload) => {
+const updateData = (payload) => {
   return {
-    type: 'UPDATE_ACCOUNT',
+    type: 'UPDATE_DATA',
     payload: payload
+  }
+}
+
+const fetchSignature = async (url, address) => {
+  const signatureResponse = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ address })
+  })
+  const content = await signatureResponse.json()
+  return content.signature
+}
+
+export const prepareData = () => {
+  return async (dispatch) => {
+    const contract = store.getState().blockchain.smartContract
+    const account = store.getState().blockchain.account
+    const signatureUrl = store.getState().blockchain.signatureUrl
+
+    if (!contract || !account || !signatureUrl) {
+      return
+    }
+
+    const [privateRound, isPrivate, isPublic, totalSupply] = await Promise.all([
+      contract.methods.currentPrivateRound().call(),
+      contract.methods.isPrivate().call(),
+      contract.methods.isPublic().call(),
+      contract.methods.getTotalSupply().call()
+    ])
+
+    let maxMintAmount = 0
+    let proofs = []
+
+    if (isPrivate) {
+      proofs = whitelistRoundAddresses.filter((w) => {
+        return w[0].toLowerCase() === account.toLowerCase() && w[2].toLowerCase() === privateRound.toLowerCase()
+      })
+
+      if (proofs.length === 1) {
+        maxMintAmount = proofs[0][1]
+
+        const hash = hashKeccak256(proofs[0])
+        const mkp = merkleTree.getHexProof(hash)
+
+        proofs[0].push(mkp)
+      }
+    }
+
+    let signature = ''
+    if (isPublic) {
+      maxMintAmount = 1
+      signature = store.getState().blockchain.signature
+
+      if (signature === '' || signature === undefined || signature === null) {
+        signature = await fetchSignature(signatureUrl, account)
+      }
+    }
+
+    dispatch(updateData({
+      privateRound,
+      isPrivate,
+      isPublic,
+      proofs,
+      maxMintAmount,
+      signature,
+      totalSupply
+    }))
   }
 }
 
 export const connect = () => {
   return async (dispatch) => {
     dispatch(connectRequest())
-    const abiResponse = await fetch('/config/abi.json', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
 
-    const abi = await abiResponse.json()
     const configResponse = await fetch('/config/config.json', {
       headers: {
         'Content-Type': 'application/json',
@@ -49,6 +118,8 @@ export const connect = () => {
     })
 
     const CONFIG = await configResponse.json()
+    console.log('CONFIG', CONFIG)
+
     const { ethereum } = window
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask
 
@@ -65,53 +136,29 @@ export const connect = () => {
         })
 
         if (networkId === `${CONFIG.NETWORK.ID}`) {
-          const nanaMintContract = new Web3EthContract(
-            abi,
+          const saleContract = new Web3EthContract(
+            contractInterface,
             CONFIG.CONTRACT_ADDRESS
           )
-
-          const round = await nanaMintContract.methods.currentMintRound().call()
-
-          const proofs = whitelistRoundAddresses.filter((w) => {
-            return w[0].toLowerCase() === accounts[0].toLowerCase() && w[2].toLowerCase() === round.toLowerCase()
-          })
-
-          let maxMintAmount = 0
-          if (proofs.length === 1) {
-            maxMintAmount = proofs[0][1]
-          }
-
-          const hash = hashKeccak256(proofs[0])
-          const mkp = merkleTree.getHexProof(hash)
-          console.log('mkp', mkp)
-
-          proofs[0].push(mkp)
 
           dispatch(
             connectSuccess({
               account: accounts[0],
-              smartContract: nanaMintContract,
+              smartContract: saleContract,
               web3,
-              round,
-              proofs,
-              maxMintAmount
+              signatureUrl: CONFIG.SIGNATURE_API_ENDPOINT
             })
           )
 
-          console.log('dispatched')
-
-          // Add listeners start
-          ethereum.on('accountsChanged', (accounts) => {
-            // dispatch(updateAccount(accounts[0]))
+          ethereum.on('accountsChanged', (_) => {
             window.location.reload()
           })
+
           ethereum.on('chainChanged', () => {
             window.location.reload()
           })
-          // Add listeners end
         } else {
           const isAddBlockchainNetwork = await addBlockchainNetwork()
-
           if (!isAddBlockchainNetwork) {
             dispatch(connectFailed(`Change network to ${CONFIG.NETWORK.NAME}.`))
           }
@@ -123,12 +170,5 @@ export const connect = () => {
     } else {
       dispatch(connectFailed('Install Metamask.'))
     }
-  }
-}
-
-export const updateAccount = (account) => {
-  return async (dispatch) => {
-    dispatch(updateAccountRequest({ account: account }))
-    dispatch(fetchData(account))
   }
 }

@@ -4,9 +4,14 @@ const initialState = {
   smartContract: null,
   web3: null,
   errorMsg: '',
-  round: '0x0000000000000000000000000000000000000000000000000000000000000000',
+  privateRound: '0x0000000000000000000000000000000000000000000000000000000000000000',
+  isPrivate: false,
+  isPublic: false,
+  proofs: [],
   maxMintAmount: 0,
-  proofs: []
+  signature: '',
+  signatureUrl: null,
+  totalSupply: 0
 }
 
 const blockchainReducer = (state = initialState, action) => {
@@ -22,10 +27,8 @@ const blockchainReducer = (state = initialState, action) => {
         loading: false,
         account: action.payload.account,
         smartContract: action.payload.smartContract,
-        tokenContract: action.payload.tokenContract,
         web3: action.payload.web3,
-        maxMintAmount: action.payload.maxMintAmount,
-        proofs: action.payload.proofs
+        signatureUrl: action.payload.signatureUrl
       }
     case 'CONNECTION_FAILED':
       return {
@@ -33,10 +36,16 @@ const blockchainReducer = (state = initialState, action) => {
         loading: false,
         errorMsg: action.payload
       }
-    case 'UPDATE_ACCOUNT':
+    case 'UPDATE_DATA':
       return {
         ...state,
-        account: action.payload.account
+        privateRound: action.payload.privateRound,
+        isPrivate: action.payload.isPrivate,
+        isPublic: action.payload.isPublic,
+        proofs: action.payload.proofs,
+        maxMintAmount: action.payload.maxMintAmount,
+        signature: action.payload.signature,
+        totalSupply: action.payload.totalSupply
       }
     default:
       return state

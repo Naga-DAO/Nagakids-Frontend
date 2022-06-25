@@ -1,11 +1,12 @@
 {
-  "CONTRACT_ADDRESS": "0xEb1387AE29a2126158b43a0536827bfB607DF82b",
+  "CONTRACT_ADDRESS": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
   "SCAN_LINK": "https://polygonscan.com/address/0x046976f19a14ee7d06cb9e983c8142fb2aac0e5e",
   "NETWORK": {
     "NAME": "Optimism",
     "SYMBOL": "OETH",
-    "ID": 4
+    "ID": 31337
   },
+  "SIGNATURE_API_ENDPOINT": "http://127.0.0.1:3001/signature",
   "NFT_NAME": "NagaDAO",
   "SYMBOL": "NAGK",
   "MAX_SUPPLY": 1111,
