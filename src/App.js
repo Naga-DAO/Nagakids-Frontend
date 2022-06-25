@@ -17,7 +17,7 @@ import twitterIcon from './styles/twitter-round-color.svg'
 import useInterval from 'use-interval'
 import WalletAddress from './components/WalletAddress'
 import Avatar from './components/Avatar'
-// import { PresentToAll } from "@mui/icons-material";
+// import { PresentToAll } from '@mui/icons-material';
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -304,7 +304,7 @@ function App () {
             className='a-link quixotic'
             rel='noreferrer'
           >
-            <img src={quixoticIcon} alt='' />
+            <img className='shadow-btn' src={quixoticIcon} alt='' />
           </a>
           <a
             href='https://discord.gg/DF7krb8uNq'
@@ -312,7 +312,7 @@ function App () {
             className='a-link discord'
             rel='noreferrer'
           >
-            <img src={discordIcon} alt='' />
+            <img className='shadow-btn' src={discordIcon} alt='' />
           </a>
           <a
             href='https://www.facebook.com/nagadaonft/'
@@ -320,7 +320,7 @@ function App () {
             className='a-link facebook'
             rel='noreferrer'
           >
-            <img src={facebookIcon} alt='' />
+            <img className='shadow-btn' src={facebookIcon} alt='' />
           </a>
           <a
             href='https://twitter.com/The_NagaDAO'
@@ -328,7 +328,7 @@ function App () {
             className='a-link twitter'
             rel='noreferrer'
           >
-            <img src={twitterIcon} alt='' />
+            <img className='shadow-btn' src={twitterIcon} alt='' />
           </a>
         </div>
       </div>
@@ -488,8 +488,8 @@ function App () {
 
       <div className='bot-nav-container'>
         <div className='bot-nav'>
-          {/* <div className="bot-nav-address">
-              <StyledLink target={"_blank"} href={CONFIG.SCAN_LINK}>
+          {/* <div className='bot-nav-address'>
+              <StyledLink target={'_blank'} href={CONFIG.SCAN_LINK}>
                   contract adddress: {truncate(CONFIG.CONTRACT_ADDRESS, 15)}
                 </StyledLink>
             </div> */}
@@ -554,8 +554,8 @@ function App () {
           </div>
         </div>
       </section>
-      {/* <section className="section">
-        <div className="section-inner">
+      {/* <section className='section'>
+        <div className='section-inner'>
           <table>
             <tbody>
               <tr>
