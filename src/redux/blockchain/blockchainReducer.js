@@ -11,7 +11,9 @@ const initialState = {
   maxMintAmount: 0,
   signature: '',
   signatureUrl: null,
-  totalSupply: 0
+  totalSupply: 0,
+  isPrivateUserMinted: false,
+  isPublicUserMinted: false
 }
 
 const blockchainReducer = (state = initialState, action) => {
@@ -45,7 +47,9 @@ const blockchainReducer = (state = initialState, action) => {
         proofs: action.payload.proofs,
         maxMintAmount: action.payload.maxMintAmount,
         signature: action.payload.signature,
-        totalSupply: action.payload.totalSupply
+        totalSupply: action.payload.totalSupply,
+        isPublicUserMinted: action.payload.isPublicUserMinted,
+        isPrivateUserMinted: action.payload.isPrivateUserMinted
       }
     default:
       return state

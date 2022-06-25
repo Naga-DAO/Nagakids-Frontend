@@ -166,20 +166,15 @@ function App () {
     ]
   }
 
-  const mintNFTs = () => {
-    const cost = CONFIG.WEI_COST
+  const mintPrivateNFTs = () => {
+    // const cost = CONFIG.WEI_COST
     const gasLimit = CONFIG.GAS_LIMIT
 
-    const totalCostWei = String(cost * blockchain.maxMintAmount)
+    // const totalCostWei = String(cost * blockchain.maxMintAmount)
     const totalGasLimit = String(gasLimit * blockchain.maxMintAmount)
-
-    console.log('Cost: ', totalCostWei)
-    console.log('Gas limit: ', totalGasLimit)
 
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
-
-    console.log(blockchain.proofs[0][3])
 
     blockchain.smartContract.methods
       .mint(blockchain.proofs[0][3], blockchain.proofs[0][1], blockchain.proofs[0][2])
@@ -200,6 +195,11 @@ function App () {
         )
         setClaimingNft(false)
       })
+  }
+
+  const mintPublicNFTs = () => {
+    // TODO: mint public nfts
+    console.log('mintPublicNFTs')
   }
 
   const getConfig = async () => {
@@ -325,35 +325,54 @@ function App () {
                             : null}
                         </div>
                         )
-                      : blockchain.proofs.length > 0
+                      : blockchain.isPublic || (blockchain.isPrivate && blockchain.proofs.length > 0)
                         ? (
                           <>
-                            <div className='after-connected'>
-                              <div className='mint-amount'>
-                                {blockchain.maxMintAmount}
-                              </div>
+                            {(blockchain.isPublic && blockchain.isPublicUserMinted) || (blockchain.isPrivate && blockchain.isPrivateUserMinted)
+                              ? (
+                                <>
+                                  <div className='after-connected'>
+                                    <div className='mint-amount'>
+                                      You already minted {blockchain.maxMintAmount}
+                                    </div>
+                                    <div className='connected-to'>
+                                      Connected to <WalletAddress />
+                                    </div>
+                                  </div>
+                                </>
+                                )
+                              : (
+                                <div className='after-connected'>
+                                  <div className='mint-amount'>
+                                    {blockchain.maxMintAmount}
+                                  </div>
 
-                              <div className='mint-btn'>
-                                <button
-                                  className='buy-btn glow-on-hover'
-                                  disabled={claimingNft ? 1 : 0}
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    mintNFTs()
-                                    // getData()
-                                  }}
-                                >
-                                  {claimingNft ? 'BUYING...' : 'BUY'}
-                                </button>
+                                  <div className='mint-btn'>
+                                    <button
+                                      className='buy-btn glow-on-hover'
+                                      disabled={claimingNft ? 1 : 0}
+                                      onClick={(e) => {
+                                        e.preventDefault()
 
-                              </div>
+                                        if (blockchain.isPublic) {
+                                          mintPublicNFTs()
+                                        } else if (blockchain.isPrivate) {
+                                          mintPrivateNFTs()
+                                        }
+                                      }}
+                                    >
+                                      {claimingNft ? 'BUYING...' : 'BUY'}
+                                    </button>
 
-                              {feedback}
+                                  </div>
 
-                              <div className='connected-to'>
-                                Connected to <WalletAddress />
-                              </div>
-                            </div>
+                                  {feedback}
+
+                                  <div className='connected-to'>
+                                    Connected to <WalletAddress />
+                                  </div>
+                                </div>
+                                )}
                           </>
                           )
                         : (

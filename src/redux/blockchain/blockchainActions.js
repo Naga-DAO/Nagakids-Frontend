@@ -66,6 +66,12 @@ export const prepareData = () => {
       contract.methods.getTotalSupply().call()
     ])
 
+    const checksumAddress = Web3.utils.toChecksumAddress(account)
+    const [isPublicUserMinted, isPrivateUserMinted] = await Promise.all([
+      contract.methods.isPublicUserMinted(checksumAddress).call(),
+      contract.methods.isPrivateUserMinted(checksumAddress, privateRound).call()
+    ])
+
     let maxMintAmount = 0
     let proofs = []
 
@@ -101,7 +107,9 @@ export const prepareData = () => {
       proofs,
       maxMintAmount,
       signature,
-      totalSupply
+      totalSupply,
+      isPublicUserMinted,
+      isPrivateUserMinted
     }))
   }
 }
@@ -118,7 +126,6 @@ export const connect = () => {
     })
 
     const CONFIG = await configResponse.json()
-    console.log('CONFIG', CONFIG)
 
     const { ethereum } = window
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask
