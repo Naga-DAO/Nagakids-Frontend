@@ -244,7 +244,7 @@ function App () {
       <div className='nagaLinks'>
         <div className='icon'>
           <a
-            href='https://quixotic.io/collection/0xF0fFA30813054d55fB463573e1A5af04F0C3348A'
+            href='https://quixotic.io/collection/0xCc4445aBf253EbFEb0F5AD8A8AFE2675e5f6a759'
             target='_blank'
             className='a-link quixotic'
             rel='noreferrer'
