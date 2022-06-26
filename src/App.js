@@ -592,7 +592,7 @@ function App () {
           </div>
 
           <div className='icon'>
-            <a href='https://quixotic.io/collection/0x9bF1FB77441df41aaA9a5a425d4E3a3527eeB4ec' className='a-link quixotic'>
+            <a href='https://quixotic.io/collection/0xF0fFA30813054d55fB463573e1A5af04F0C3348A' className='a-link quixotic'>
               <img src={quixoticIcon} alt='' />
             </a>
             <a href='https://discord.gg/DF7krb8uNq' className='a-link discord'>
