@@ -361,7 +361,7 @@ function App () {
                                         }
                                       }}
                                     >
-                                      {claimingNft ? 'BUYING...' : 'BUY'}
+                                      {claimingNft ? 'Minting...' : 'Mint'}
                                     </button>
 
                                   </div>
