@@ -168,18 +168,18 @@ function App () {
 
   const mintPrivateNFTs = () => {
     // const cost = CONFIG.WEI_COST
-    const gasLimit = CONFIG.GAS_LIMIT
+    // const gasLimit = CONFIG.GAS_LIMIT
 
     // const totalCostWei = String(cost * blockchain.maxMintAmount)
-    const totalGasLimit = String(gasLimit * blockchain.maxMintAmount)
+    // const totalGasLimit = String(gasLimit * blockchain.maxMintAmount)
 
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
     setClaimingNft(true)
 
     blockchain.smartContract.methods
-      .mint(blockchain.proofs[0][3], blockchain.proofs[0][1], blockchain.proofs[0][2])
+      .privateMint(blockchain.proofs[0][3], blockchain.proofs[0][1], blockchain.proofs[0][2])
       .send({
-        gasLimit: String(totalGasLimit),
+        // gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
         from: blockchain.account
       })
@@ -379,9 +379,11 @@ function App () {
                           <>
                             <div className='after-connected'>
                               <div className='mint-amount'>
-                                {blockchain.proofs.length <= 0
-                                  ? 'You are not in whitelist'
-                                  : 'Your mint quota has exceeded'}
+                                {(!blockchain.isPrivte && !blockchain.isPublic)
+                                  ? 'Sales is not open yet'
+                                  : blockchain.proofs.length <= 0
+                                    ? 'You are not in whitelist'
+                                    : 'Your mint quota has exceeded'}
                               </div>
                               <div className='connected-to'>
                                 Connected to <WalletAddress />

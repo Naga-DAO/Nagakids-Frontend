@@ -1,10 +1,10 @@
 {
-  "CONTRACT_ADDRESS": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-  "SCAN_LINK": "https://polygonscan.com/address/0x046976f19a14ee7d06cb9e983c8142fb2aac0e5e",
+  "CONTRACT_ADDRESS": "0xF0fFA30813054d55fB463573e1A5af04F0C3348A",
+  "SCAN_LINK": "https://optimistic.etherscan.io/address/0xF0fFA30813054d55fB463573e1A5af04F0C3348A",
   "NETWORK": {
     "NAME": "Optimism",
-    "SYMBOL": "OETH",
-    "ID": 31337
+    "SYMBOL": "ETH",
+    "ID": 10
   },
   "SIGNATURE_API_ENDPOINT": "http://127.0.0.1:3001/signature",
   "NFT_NAME": "NagaDAO",

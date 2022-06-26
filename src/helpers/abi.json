@@ -5,16 +5,6 @@
         "internalType": "contract INagaKid",
         "name": "_nagaKids",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_signer",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_merkleRoot",
-        "type": "bytes32"
       }
     ],
     "stateMutability": "nonpayable",
