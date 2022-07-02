@@ -2,7 +2,7 @@ import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 import contractInterface from './abi.json'
-import whitelistAddress from './whitelist.json'
+import holderAddress from './holders.json'
 
 const blockchainNetworkConfig = {
   chainId: Web3.utils.toHex(10),
@@ -36,7 +36,7 @@ const hashKeccak256 = (data) => {
 
   return ethers.utils.solidityKeccak256(['address', 'uint256', 'bytes32'], [address, amount, round])
 }
-const whitelistRoundAddresses = whitelistAddress.Whitelist
+const whitelistRoundAddresses = holderAddress.NagaHolders
 
 const leafNodes = whitelistRoundAddresses.map(hashKeccak256)
 const merkleTree = new MerkleTree(leafNodes, ethers.utils.keccak256, { sortPairs: true })
