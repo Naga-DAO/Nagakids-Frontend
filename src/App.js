@@ -420,7 +420,7 @@ function App () {
                 </StyledLink>
             </div> */}
           <div className='bot-nav-minted'>
-            {(blockchain.isPrivate === false && blockchain.isPublic === false)
+            {(blockchain.totalSupply === 0)
               ? (
                 <>... / {CONFIG.MAX_SUPPLY}</>
                 )
