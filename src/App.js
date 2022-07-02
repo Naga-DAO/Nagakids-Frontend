@@ -18,6 +18,7 @@ import Avatar from './components/Avatar'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import useInterval from 'use-interval'
+import MintAmount from './components/MintAmount'
 
 export const StyledButton = styled.button``
 
@@ -301,97 +302,97 @@ function App () {
                   : (
                     <div>
                       {
-                    blockchain.account === '' || blockchain.smartContract === null
-                      ? (
-                        <div className='connect-div'>
-                          <button
-                            className='buy-btn glow-on-hover'
-                            onClick={(e) => {
-                              e.preventDefault()
-                              dispatch(connect())
-                            }}
-                          >
-                            CONNECT
-                          </button>
-
-                          <div className='connect-div-p'>
-                            Connect to the Optimism Network
-                          </div>
-
-                          {blockchain.errorMsg !== ''
-                            ? (
-                              <div>{blockchain.errorMsg}</div>
-                              )
-                            : null}
-                        </div>
-                        )
-                      : blockchain.isPublic || (blockchain.isPrivate && blockchain.proofs.length > 0)
+                      blockchain.account === '' || blockchain.smartContract === null
                         ? (
-                          <>
-                            {(blockchain.isPublic && blockchain.isPublicUserMinted) || (blockchain.isPrivate && blockchain.isPrivateUserMinted)
+                          <div className='connect-div'>
+                            <button
+                              className='buy-btn glow-on-hover'
+                              onClick={(e) => {
+                                e.preventDefault()
+                                dispatch(connect())
+                              }}
+                            >
+                              CONNECT
+                            </button>
+
+                            <div className='connect-div-p'>
+                              Connect to the Optimism Network
+                            </div>
+
+                            {blockchain.errorMsg !== ''
                               ? (
-                                <>
+                                <div>{blockchain.errorMsg}</div>
+                                )
+                              : null}
+                          </div>
+                          )
+                        : blockchain.isPublic || (blockchain.isPrivate && blockchain.proofs.length > 0)
+                          ? (
+                            <>
+                              {(blockchain.isPublic && blockchain.isPublicUserMinted) || (blockchain.isPrivate && blockchain.isPrivateUserMinted)
+                                ? (
+                                  <>
+                                    <div className='after-connected'>
+                                      <div className='mint-amount'>
+                                        You already minted {blockchain.maxMintAmount}
+                                      </div>
+                                      <div className='connected-to'>
+                                        Connected to <WalletAddress />
+                                      </div>
+                                    </div>
+                                  </>
+                                  )
+                                : (
                                   <div className='after-connected'>
                                     <div className='mint-amount'>
-                                      You already minted {blockchain.maxMintAmount}
+                                      {blockchain.maxMintAmount}
                                     </div>
+
+                                    <div className='mint-btn'>
+                                      <button
+                                        className='buy-btn glow-on-hover'
+                                        disabled={claimingNft ? 1 : 0}
+                                        onClick={(e) => {
+                                          e.preventDefault()
+
+                                          if (blockchain.isPublic) {
+                                            mintPublicNFTs()
+                                          } else if (blockchain.isPrivate) {
+                                            mintPrivateNFTs()
+                                          }
+                                        }}
+                                      >
+                                        {claimingNft ? 'Minting...' : 'Mint'}
+                                      </button>
+
+                                    </div>
+
+                                    {feedback}
+
                                     <div className='connected-to'>
                                       Connected to <WalletAddress />
                                     </div>
                                   </div>
-                                </>
-                                )
-                              : (
-                                <div className='after-connected'>
-                                  <div className='mint-amount'>
-                                    {blockchain.maxMintAmount}
-                                  </div>
-
-                                  <div className='mint-btn'>
-                                    <button
-                                      className='buy-btn glow-on-hover'
-                                      disabled={claimingNft ? 1 : 0}
-                                      onClick={(e) => {
-                                        e.preventDefault()
-
-                                        if (blockchain.isPublic) {
-                                          mintPublicNFTs()
-                                        } else if (blockchain.isPrivate) {
-                                          mintPrivateNFTs()
-                                        }
-                                      }}
-                                    >
-                                      {claimingNft ? 'Minting...' : 'Mint'}
-                                    </button>
-
-                                  </div>
-
-                                  {feedback}
-
-                                  <div className='connected-to'>
-                                    Connected to <WalletAddress />
-                                  </div>
+                                  )}
+                            </>
+                            )
+                          : (
+                            <>
+                              <div className='after-connected'>
+                                <div className='mint-amount'>
+                                  {(!blockchain.isPrivte && !blockchain.isPublic)
+                                    ? 'Sales is not open yet'
+                                    : blockchain.proofs.length <= 0
+                                      ? 'You are not in whitelist'
+                                      : 'Your mint quota has exceeded'}
                                 </div>
-                                )}
-                          </>
-                          )
-                        : (
-                          <>
-                            <div className='after-connected'>
-                              <div className='mint-amount'>
-                                {(!blockchain.isPrivte && !blockchain.isPublic)
-                                  ? 'Sales is not open yet'
-                                  : blockchain.proofs.length <= 0
-                                    ? 'You are not in whitelist'
-                                    : 'Your mint quota has exceeded'}
+                                <div className='connected-to'>
+                                  Connected to <WalletAddress />
+                                </div>
                               </div>
-                              <div className='connected-to'>
-                                Connected to <WalletAddress />
-                              </div>
-                            </div>
-                          </>
-                          )
-                  }
+                            </>
+                            )
+                    }
                     </div>
                     )
           }
@@ -420,15 +421,7 @@ function App () {
                 </StyledLink>
             </div> */}
           <div className='bot-nav-minted'>
-            {(blockchain.totalSupply === 0)
-              ? (
-                <>... / {CONFIG.MAX_SUPPLY}</>
-                )
-              : (
-                <>
-                  {Number(blockchain.totalSupply)} / {CONFIG.MAX_SUPPLY}
-                </>
-                )}
+            <MintAmount contractAddress={CONFIG.CONTRACT_ADDRESS} maxSupply={CONFIG.MAX_SUPPLY} />
           </div>
 
           <div className='bot-nav-price'>
