@@ -313,7 +313,7 @@ function App () {
               ? (
                 <div>
                   <div>The sale has ended.</div>
-                  You can still find {CONFIG.NFT_NAME} on {" "}
+                  You can still find {CONFIG.NFT_NAME} on {' '}
                   <StyledLink target='_blank' href={CONFIG.MARKETPLACE_LINK}>
                     {CONFIG.MARKETPLACE}
                   </StyledLink>
