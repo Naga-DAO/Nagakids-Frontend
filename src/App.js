@@ -199,8 +199,32 @@ function App () {
   }
 
   const mintPublicNFTs = () => {
-    // TODO: mint public nfts
-    console.log('mintPublicNFTs')
+    setFeedback(`Minting your ${CONFIG.NFT_NAME}...`)
+    setClaimingNft(true)
+
+    blockchain.smartContract.methods
+      .publicMint(blockchain.signature)
+      .send({
+        // gasLimit: String(totalGasLimit),
+        to: CONFIG.CONTRACT_ADDRESS,
+        from: blockchain.account
+      })
+      .once('error', (err) => {
+        console.log(err)
+        if (err.message) {
+          setFeedback(err.message)
+        } else {
+          setFeedback('Sorry, something went wrong please try again later.')
+        }
+        setClaimingNft(false)
+      })
+      .then((receipt) => {
+        console.log(receipt)
+        setFeedback(
+          `the ${CONFIG.NFT_NAME} is yours! go visit Quixotic.io to view it.`
+        )
+        setClaimingNft(false)
+      })
   }
 
   const getConfig = async () => {
