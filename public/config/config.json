@@ -6,8 +6,8 @@
     "SYMBOL": "ETH",
     "ID": 10
   },
-  "SIGNATURE_API_ENDPOINT": "http://127.0.0.1:3001/signature",
-  "NFT_NAME": "NagaDAO",
+  "SIGNATURE_API_ENDPOINT": "https://asia-southeast1-naga-dao-kids-01.cloudfunctions.net/signMessage",
+  "NFT_NAME": "NagaKids",
   "SYMBOL": "NAGK",
   "MAX_SUPPLY": 1111,
   "WEI_COST": 0,
